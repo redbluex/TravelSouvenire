@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TravelSouvenire</string>
+    <string name="login_register">Login</string>
+    <string name="password_register">Password</string>
+    <string name="singin_register">Sing In</string>
+    <string name="register_register">You dont have account? Register</string>
+    <string name="nav_home">home</string>
+    <string name="nav_add">add</string>
+    <string name="nav_profile">profile</string>
+</resources>
