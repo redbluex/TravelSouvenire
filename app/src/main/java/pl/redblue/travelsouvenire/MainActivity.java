@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.fragment2, newPostsFrag);
                         break;
                     case R.id.action_add:
-
                         break;
                     case R.id.action_profile:
                         break;
