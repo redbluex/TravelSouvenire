@@ -4,11 +4,11 @@
         android:enabled="true"
         android:title="@string/nav_home"
         android:icon="@drawable/baseline_home_black_18dp" />
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/action_add"
         android:enabled="true"
         android:title="@string/nav_add"
         android:icon="@drawable/outline_add_box_black_18dp" />
-    <item android:id="@+id/action_navigation"
+    <item android:id="@+id/action_profile"
         android:enabled="true"
         android:title="@string/nav_profile"
         android:icon="@drawable/outline_person_black_18dp" />
