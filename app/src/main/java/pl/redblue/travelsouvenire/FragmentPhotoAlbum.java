@@ -1,6 +1,6 @@
 package pl.redblue.travelsouvenire;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ public class FragmentPhotoAlbum extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_photo_album, container, false);
         GridView gridView = (GridView)view.findViewById(R.id.gridViewPhoto);
-        //gridView.setAdapter(new ImageAdapter(this));
+        //gridView.setAdapter(new ImageAdapter(view));
 
 
         return view;

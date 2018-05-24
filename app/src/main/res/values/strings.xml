@@ -7,4 +7,9 @@
     <string name="nav_home">home</string>
     <string name="nav_add">add</string>
     <string name="nav_profile">profile</string>
+    <string name="country_add">Country</string>
+    <string name="city_add">City</string>
+    <string name="desription_add">Description</string>
+    <string name="upload_photo_add">Upload Photo</string>
+    <string name="add_add">Add</string>
 </resources>
