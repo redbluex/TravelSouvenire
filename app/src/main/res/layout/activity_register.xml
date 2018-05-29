@@ -61,5 +61,6 @@
         android:text="@string/register_register"
         android:gravity="center"
         android:textColor="@color/colorRedDracula"
+        android:onClick="goToRegisterForm"
         />
 </LinearLayout>
