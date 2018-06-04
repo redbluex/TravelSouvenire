@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 public class ProfileActivity extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
 
     @Nullable
     @Override
@@ -33,8 +32,5 @@ public class ProfileActivity extends Fragment {
 
     }
 
-    public interface OnFragmentInteractionListener {
 
-        void messageFromParentFragment(Uri uri);
-    }
 }
