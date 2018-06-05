@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(passwordCorrect.equals(response.body().getPassword())){
                     Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                    i.putExtra("userId", response.body().getId());
                     startActivity(i);
                 }
                 else{

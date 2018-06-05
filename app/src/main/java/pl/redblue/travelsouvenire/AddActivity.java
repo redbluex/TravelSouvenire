@@ -8,18 +8,46 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import pl.redblue.travelsouvenire.pojo.SinglePlace;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
 public class AddActivity extends AppCompatActivity {
     public static final int GET_FROM_GALLERY = 3;
+    EditText editCountry, editCity, editDesc;
+    Button buttonAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
+        Intent x = getIntent();
+        final Integer userId = x.getIntExtra("userId", 0);
+        editCity = (EditText)findViewById(R.id.editCity);
+        editCountry = (EditText)findViewById(R.id.editCountry);
+        editDesc= (EditText)findViewById(R.id.editDesc);
+        buttonAdd = (Button)findViewById(R.id.buttonAdd);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SinglePlace singlePlace = new SinglePlace();
+                singlePlace.setCity(editCity.getText().toString());
+                singlePlace.setCountry(editCountry.getText().toString());
+                singlePlace.setDescription(editDesc.getText().toString());
+                sendToServer(userId, singlePlace);
+            }
+        });
 
     }
 
@@ -39,12 +67,28 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    private void sendToServer(Integer userId, SinglePlace singlePlace){
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
 
-    public void AcceptButton(View view) {
-        //Adding new location into DB
+        MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
+        Call<SinglePlace>call = myInterfaceToRetro.addPlace(userId, singlePlace);
+        call.enqueue(new Callback<SinglePlace>() {
+            @Override
+            public void onResponse(Call<SinglePlace> call, Response<SinglePlace> response) {
 
-        Intent intent = new Intent(AddActivity.this, MainActivity.class);
+            }
+
+            @Override
+            public void onFailure(Call<SinglePlace> call, Throwable t) {
+
+            }
+        });
     }
+
+
+
 
     public void UploadPhotoButton(View view) {
         startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);

@@ -63,6 +63,6 @@
         android:layout_height="wrap_content"
         android:text="@string/add_add"
         android:layout_marginTop="60dp"
-        android:onClick="AcceptButton"/>
+        />
 
 </LinearLayout>

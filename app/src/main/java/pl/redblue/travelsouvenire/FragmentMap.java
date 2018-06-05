@@ -1,5 +1,8 @@
 package pl.redblue.travelsouvenire;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -17,6 +20,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+import java.util.Locale;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback{
 
@@ -55,6 +61,39 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(21,40)).title("TEST TEST"));
+        LatLng adress = getLocationFromAddress( "Warsaw");
+        googleMap.addMarker(new MarkerOptions().position(adress).title("Warsaw"));
+        adress = getLocationFromAddress( "Dubrovnik");
+        googleMap.addMarker(new MarkerOptions().position(adress).title("Dubrovnik"));
+        adress = getLocationFromAddress( "Zadar");
+        googleMap.addMarker(new MarkerOptions().position(adress).title("Zadar"));
+
+    }
+
+    public LatLng getLocationFromAddress( String strAddress)
+    {
+        Geocoder coder= new Geocoder(getContext());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try
+        {
+            address = coder.getFromLocationName(strAddress, 5);
+            if(address==null)
+            {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return p1;
+
     }
 }
