@@ -24,6 +24,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 import java.util.Locale;
 
+import pl.redblue.travelsouvenire.pojo.SinglePlace;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
+
 public class FragmentMap extends Fragment implements OnMapReadyCallback{
 
     GoogleMap mGoogleMap;
@@ -61,12 +70,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        LatLng adress = getLocationFromAddress( "Warsaw");
-        googleMap.addMarker(new MarkerOptions().position(adress).title("Warsaw"));
-        adress = getLocationFromAddress( "Dubrovnik");
-        googleMap.addMarker(new MarkerOptions().position(adress).title("Dubrovnik"));
-        adress = getLocationFromAddress( "Zadar");
-        googleMap.addMarker(new MarkerOptions().position(adress).title("Zadar"));
+
+        connectionWithWS(myIds, googleMap);
 
     }
 
@@ -95,5 +100,30 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         }
         return p1;
 
+    }
+
+    public void connectionWithWS(Integer id, GoogleMap googleM){
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
+        Call<List<SinglePlace>>call = myInterfaceToRetro.getPlaces(id);
+        call.enqueue(new Callback<List<SinglePlace>>() {
+            @Override
+            public void onResponse(Call<List<SinglePlace>> call, Response<List<SinglePlace>> response) {
+                for(int i=0; i<response.body().size(); i++) {
+                    String city = response.body().get(i).getCity();
+                    LatLng adress = getLocationFromAddress(city);
+                    if(adress!=null)
+                    mGoogleMap.addMarker(new MarkerOptions().position(adress).title(response.body().get(i).getCity()+" "
+                    + response.body().get(i).getCountry()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SinglePlace>> call, Throwable t) {
+
+            }
+        });
     }
 }

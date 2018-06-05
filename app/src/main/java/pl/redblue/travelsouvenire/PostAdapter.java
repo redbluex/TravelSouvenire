@@ -10,26 +10,28 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.redblue.travelsouvenire.pojo.SinglePlace;
+
 public class PostAdapter extends RecyclerView.Adapter {
 
-    private ArrayList<SinglePost> arrayList = new ArrayList<>();
+    private ArrayList<SinglePlace> arrayList = new ArrayList<>();
     private RecyclerView recyclerView;
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mPlace;
+        public TextView mCity;
+        public TextView mCountry;
         public TextView mDescription;
-        public TextView mPhoto;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            mPlace =  (TextView)itemView.findViewById(R.id.place_text);
+            mCity =  (TextView)itemView.findViewById(R.id.place_text);
             mDescription=(TextView)itemView.findViewById(R.id.description_text);
-            mPhoto=(TextView)itemView.findViewById(R.id.foto_text);
+            mCountry=(TextView)itemView.findViewById(R.id.foto_text);
 
         }
     }
 
-    public PostAdapter(ArrayList<SinglePost> arrayList, RecyclerView recyclerView){
+    public PostAdapter(ArrayList<SinglePlace> arrayList, RecyclerView recyclerView){
         this.arrayList = arrayList;
         this.recyclerView = recyclerView;
     }
@@ -43,10 +45,10 @@ public class PostAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-       SinglePost singlePost = arrayList.get(position);
-        ((MyViewHolder)holder).mPlace.setText(singlePost.getPlace());
-        ((MyViewHolder)holder).mDescription.setText(singlePost.getDescription());
-        ((MyViewHolder)holder).mPhoto.setText(singlePost.getPhoto());
+       SinglePlace singlePlace = arrayList.get(position);
+        ((MyViewHolder)holder).mCity.setText(singlePlace.getCity());
+        ((MyViewHolder)holder).mDescription.setText(singlePlace.getDescription());
+        ((MyViewHolder)holder).mCountry.setText(singlePlace.getCountry());
     }
 
     @Override

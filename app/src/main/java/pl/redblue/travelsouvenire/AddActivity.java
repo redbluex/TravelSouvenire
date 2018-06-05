@@ -22,6 +22,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
+
 
 public class AddActivity extends AppCompatActivity {
     public static final int GET_FROM_GALLERY = 3;
@@ -45,7 +47,9 @@ public class AddActivity extends AppCompatActivity {
                 singlePlace.setCity(editCity.getText().toString());
                 singlePlace.setCountry(editCountry.getText().toString());
                 singlePlace.setDescription(editDesc.getText().toString());
-                sendToServer(userId, singlePlace);
+                sendToServer(myIds, singlePlace);
+                Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

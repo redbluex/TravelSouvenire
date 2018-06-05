@@ -1,5 +1,7 @@
 package pl.redblue.travelsouvenire;
 
+import java.util.List;
+
 import pl.redblue.travelsouvenire.pojo.SinglePlace;
 import pl.redblue.travelsouvenire.pojo.UserPersonal;
 import retrofit2.Call;
@@ -21,4 +23,10 @@ public interface MyInterfaceToRetro {
 
     @POST("/users/{userId}/places")
     Call<SinglePlace> addPlace(@Path("userId") Integer userId, @Body SinglePlace singlePlace);
+
+    @GET("/users/{id}")
+    Call<UserPersonal> getById(@Path("id") Integer id);
+
+    @GET("/users/{id}/places")
+    Call<List<SinglePlace>> getPlaces(@Path("id") Integer id);
 }

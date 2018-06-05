@@ -16,16 +16,11 @@ import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
-    Intent x;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        x = getIntent();
-        final Integer userId = x.getIntExtra("userId", 0);
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =  fragmentManager.beginTransaction();
         NewPostsFrag newPostsFrag =new NewPostsFrag();
@@ -45,7 +40,6 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.action_add:
                         Intent intent = new Intent(MainActivity.this, AddActivity.class);
-                        intent.putExtra("userId", userId);
                         startActivity(intent);
                         break;
                     case R.id.action_profile:

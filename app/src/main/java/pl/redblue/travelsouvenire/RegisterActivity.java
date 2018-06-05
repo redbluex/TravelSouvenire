@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static Integer myIds;
     EditText editLogin, editPassword;
     Button button;
     String nickCorrect, passwordCorrect;
@@ -53,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(passwordCorrect.equals(response.body().getPassword())){
                     Intent i = new Intent(RegisterActivity.this, MainActivity.class);
-                    i.putExtra("userId", response.body().getId());
+                    myIds = response.body().getId();
                     startActivity(i);
                 }
                 else{
