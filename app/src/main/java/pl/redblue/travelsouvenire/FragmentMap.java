@@ -20,10 +20,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import pl.redblue.travelsouvenire.pojo.SinglePlace;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,9 +110,44 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
 
     public void connectionWithWS(Integer id, GoogleMap googleM){
         Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
         MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
+        final Observable<List<SinglePlace>> observable = myInterfaceToRetro.getPlacess(myIds);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<SinglePlace>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<SinglePlace> singlePlaces) {
+                        for(SinglePlace s : singlePlaces){
+                            String city = s.getCity();
+                            LatLng adress = getLocationFromAddress(city);
+                            if(adress!=null)
+                                mGoogleMap.addMarker(new MarkerOptions().position(adress).title(s.getCity()+" "
+                                        + s.getCountry()));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+        /*
         Call<List<SinglePlace>>call = myInterfaceToRetro.getPlaces(id);
         call.enqueue(new Callback<List<SinglePlace>>() {
             @Override
@@ -124,6 +165,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             public void onFailure(Call<List<SinglePlace>> call, Throwable t) {
 
             }
-        });
+        }); */
     }
 }

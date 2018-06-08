@@ -27,6 +27,7 @@
         <activity android:name=".NewAccount" />
         <activity android:name=".AddActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".Main2Activity"></activity>
     </application>
 
 </manifest>

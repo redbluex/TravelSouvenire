@@ -31,6 +31,8 @@ public class PostAdapter extends RecyclerView.Adapter {
         }
     }
 
+
+
     public PostAdapter(ArrayList<SinglePlace> arrayList, RecyclerView recyclerView){
         this.arrayList = arrayList;
         this.recyclerView = recyclerView;

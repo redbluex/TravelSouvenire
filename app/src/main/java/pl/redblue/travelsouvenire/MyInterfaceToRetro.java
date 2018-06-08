@@ -2,6 +2,7 @@ package pl.redblue.travelsouvenire;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import pl.redblue.travelsouvenire.pojo.SinglePlace;
 import pl.redblue.travelsouvenire.pojo.UserPersonal;
 import retrofit2.Call;
@@ -29,4 +30,7 @@ public interface MyInterfaceToRetro {
 
     @GET("/users/{id}/places")
     Call<List<SinglePlace>> getPlaces(@Path("id") Integer id);
+
+    @GET("/users/{id}/places")
+    Observable<List<SinglePlace>> getPlacess(@Path("id") Integer id);
 }

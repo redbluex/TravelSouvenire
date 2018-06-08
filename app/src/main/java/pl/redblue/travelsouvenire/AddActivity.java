@@ -27,8 +27,8 @@ import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
 
 public class AddActivity extends AppCompatActivity {
     public static final int GET_FROM_GALLERY = 3;
-    EditText editCountry, editCity, editDesc;
-    Button buttonAdd;
+    EditText editCountry, editCity, editDesc, editSearch;
+    Button buttonAdd, buttonSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,18 @@ public class AddActivity extends AppCompatActivity {
         editCity = (EditText)findViewById(R.id.editCity);
         editCountry = (EditText)findViewById(R.id.editCountry);
         editDesc= (EditText)findViewById(R.id.editDesc);
+        editSearch = (EditText)findViewById(R.id.editSearch);
         buttonAdd = (Button)findViewById(R.id.buttonAdd);
+        buttonSearch = (Button)findViewById(R.id.buttonSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchPhrase = editSearch.getText().toString();
+            }
+        });
+
+
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
