@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
+import static pl.redblue.travelsouvenire.SearchFragment.searchId;
+
 public class MainActivity extends FragmentActivity {
     BottomNavigationView bottomNavigationView;
 
@@ -38,11 +41,16 @@ public class MainActivity extends FragmentActivity {
                         NewPostsFrag newPostsFrag =new NewPostsFrag();
                         fragmentTransaction.replace(R.id.fragment2, newPostsFrag);
                         break;
+                    case R.id.action_search:
+                        SearchMain searchMain = new SearchMain();
+                        fragmentTransaction.replace(R.id.fragment2, searchMain);
+                        break;
                     case R.id.action_add:
                         Intent intent = new Intent(MainActivity.this, AddActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.action_profile:
+                        searchId = null;
                         ProfileActivity profileActivity = new ProfileActivity();
                         fragmentTransaction.replace(R.id.fragment2, profileActivity);
                         break;

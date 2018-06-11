@@ -16,11 +16,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import pl.redblue.travelsouvenire.pojo.SinglePlace;
+import pl.redblue.travelsouvenire.pojo.UserPersonal;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
 
 import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
 
@@ -28,7 +30,7 @@ import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
 public class AddActivity extends AppCompatActivity {
     public static final int GET_FROM_GALLERY = 3;
     EditText editCountry, editCity, editDesc, editSearch;
-    Button buttonAdd, buttonSearch;
+    Button buttonAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +43,6 @@ public class AddActivity extends AppCompatActivity {
         editDesc= (EditText)findViewById(R.id.editDesc);
         editSearch = (EditText)findViewById(R.id.editSearch);
         buttonAdd = (Button)findViewById(R.id.buttonAdd);
-        buttonSearch = (Button)findViewById(R.id.buttonSearch);
-
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchPhrase = editSearch.getText().toString();
-            }
-        });
 
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +95,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 

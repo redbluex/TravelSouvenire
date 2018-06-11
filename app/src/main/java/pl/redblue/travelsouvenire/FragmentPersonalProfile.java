@@ -16,10 +16,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
+import static pl.redblue.travelsouvenire.SearchFragment.searchId;
 
 public class FragmentPersonalProfile extends Fragment {
 
     TextView textNick, textDescription;
+
 
     @Nullable
     @Override
@@ -27,16 +29,20 @@ public class FragmentPersonalProfile extends Fragment {
         View v = inflater.inflate(R.layout.fragment_personal_profile, container, false);
         textNick = (TextView)v.findViewById(R.id.textNickNameProfile);
         textDescription = (TextView)v.findViewById(R.id.textDescriptionProfile);
-        connectWithWS();
+        if(searchId!=null){
+            connectWithWS(searchId);
+        }
+        else
+        connectWithWS(myIds);
         return v;
     }
 
-    private void connectWithWS(){
+    private void connectWithWS(Integer ids){
         Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
         MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
-        Call<UserPersonal>call = myInterfaceToRetro.getById(myIds);
+        Call<UserPersonal>call = myInterfaceToRetro.getById(ids);
         call.enqueue(new Callback<UserPersonal>() {
             @Override
             public void onResponse(Call<UserPersonal> call, Response<UserPersonal> response) {

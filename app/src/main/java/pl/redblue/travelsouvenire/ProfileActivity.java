@@ -20,17 +20,22 @@ public class ProfileActivity extends Fragment {
         return inflater.inflate(R.layout.activity_profile, container, false);
     }
 
+/*
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         FragmentMap fragmentMap = new FragmentMap();
         FragmentPersonalProfile personalProfile = new FragmentPersonalProfile();
         FragmentPhotoAlbum photoAlbum = new FragmentPhotoAlbum();
+        fragmentMap.setIdProfile(profileId);
+        personalProfile.setIdProfile(profileId);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentMapID, fragmentMap);
         transaction.replace(R.id.fragmentPersonalProfileID, personalProfile);
         transaction.replace(R.id.fragmentPhotoAlbumID, photoAlbum);
 
     }
+*/
 
 
 }

@@ -38,6 +38,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static pl.redblue.travelsouvenire.RegisterActivity.myIds;
+import static pl.redblue.travelsouvenire.SearchFragment.searchId;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback{
 
@@ -45,9 +46,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     MapView mMapView;
     View mView;
 
+
     public FragmentMap(){
 
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
-        connectionWithWS(myIds, googleMap);
+        if(searchId!=null) {
+            connectionWithWS(searchId, googleMap);
+        }
+        else
+            connectionWithWS(myIds, googleMap);
 
     }
 
@@ -114,7 +121,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
         MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
-        final Observable<List<SinglePlace>> observable = myInterfaceToRetro.getPlacess(myIds);
+        final Observable<List<SinglePlace>> observable = myInterfaceToRetro.getPlacess(id);
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

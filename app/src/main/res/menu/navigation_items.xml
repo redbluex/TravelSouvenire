@@ -4,6 +4,11 @@
         android:enabled="true"
         android:title="@string/nav_home"
         android:icon="@drawable/baseline_home_black_18dp" />
+    <item android:id="@+id/action_search"
+        android:enabled="true"
+        android:title="search"
+        android:icon="@drawable/baseline_search_black_18dp"
+        />
     <item android:id="@+id/action_add"
         android:enabled="true"
         android:title="@string/nav_add"
@@ -12,4 +17,5 @@
         android:enabled="true"
         android:title="@string/nav_profile"
         android:icon="@drawable/outline_person_black_18dp" />
+
 </menu>
