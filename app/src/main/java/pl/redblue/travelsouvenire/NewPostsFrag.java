@@ -9,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +38,22 @@ public class NewPostsFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_newposts, container, false);
+        ImageView imageView =(ImageView) rootView.findViewById(R.id.imageView2);
         ArrayList<SinglePlace> posts = new ArrayList<>();
         final RecyclerView rec = (RecyclerView) rootView.findViewById(R.id.newpostsRecycle);
         rec.setHasFixedSize(true);
         rec.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Picasso.get().load("http://10.0.2.2:8080/images/photosuploaded.jpg").into(imageView);
         connectWithWS(posts, rec);
 
 
         return rootView;
     }
+
+
+
+
+
 
 
 

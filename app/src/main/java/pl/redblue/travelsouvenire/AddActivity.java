@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +19,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -49,6 +58,8 @@ public class AddActivity extends AppCompatActivity {
     Bitmap bitmap;
     private final int IMG_REQUEST = 1;
     String pathImage;
+    Integer count = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,10 +83,10 @@ public class AddActivity extends AppCompatActivity {
                     singlePlace.setCity(editCity.getText().toString());
                     singlePlace.setCountry(editCountry.getText().toString());
                     singlePlace.setDescription(editDesc.getText().toString());
-                    //Toast.makeText(AddActivity.this, pathImage, Toast.LENGTH_SHORT).show();
                     sendToServer(myIds, singlePlace);
-
-                    //uploadPhoto(pathImage);
+                    if(pathImage!=null) {
+                        connectWithWS();
+                    }
                     Intent intent = new Intent(AddActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -106,7 +117,7 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
-    private void sendToServer(Integer userId, SinglePlace singlePlace){
+    public void sendToServer(Integer userId, SinglePlace singlePlace){
         Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
@@ -117,7 +128,6 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SinglePlace> call, Response<SinglePlace> response) {
 
-
             }
 
             @Override
@@ -125,6 +135,9 @@ public class AddActivity extends AppCompatActivity {
 
             }
         });
+
+
+
     }
 
     private void selectImage(){
@@ -159,10 +172,44 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
+    private void connectWithWS() {
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
+        io.reactivex.Observable<List<SinglePlace>> observable = myInterfaceToRetro.getPlacess(myIds);
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<SinglePlace>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<SinglePlace> singlePlaces) {
+                        count = singlePlaces.size();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(AddActivity.this, count+"", Toast.LENGTH_SHORT).show();
+                        uploadPhoto(count+1);
+
+                    }
+                });
+    }
 
 
 
-    private void uploadPhoto(){
+    private void uploadPhoto(Integer ids){
         File fileOri = new File(pathImage);
         String uniqueName = fileOri.getName() +  "1003";
         RequestBody namePh = RequestBody.create(MultipartBody.FORM, uniqueName);
@@ -178,7 +225,7 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-        Call<ResponseBody> call = myInterfaceToRetro.sendPhoto(file, namePh, 2);
+        Call<ResponseBody> call = myInterfaceToRetro.sendPhoto(file, namePh, ids);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -195,15 +242,11 @@ public class AddActivity extends AppCompatActivity {
 
 
 
-
-
-
     public void UploadPhotoButton(View view) {
         selectImage();
     }
 
     public void buttonKliknij(View view) {
-        Toast.makeText(AddActivity.this, "Realpath: "+pathImage, Toast.LENGTH_SHORT).show();
-       uploadPhoto();
+
     }
 }

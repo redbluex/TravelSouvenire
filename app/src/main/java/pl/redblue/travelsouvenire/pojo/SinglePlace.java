@@ -37,4 +37,8 @@ public class SinglePlace {
     public void setDescription(String descriptionPlace) {
         this.description = descriptionPlace;
     }
+
+    public Integer getIdsp() {
+        return idsp;
+    }
 }
