@@ -58,6 +58,7 @@ public class AddActivity extends AppCompatActivity {
     Bitmap bitmap;
     private final int IMG_REQUEST = 1;
     String pathImage;
+    String imagehttp;
     Integer count = 0;
 
     @Override
@@ -83,6 +84,10 @@ public class AddActivity extends AppCompatActivity {
                     singlePlace.setCity(editCity.getText().toString());
                     singlePlace.setCountry(editCountry.getText().toString());
                     singlePlace.setDescription(editDesc.getText().toString());
+                    File fileOri = new File(pathImage);
+                    String uniqueName = fileOri.getName() +  "1003";
+                    imagehttp = "http://10.0.2.2:8080/images/"+uniqueName + "uploaded.jpg";
+                    singlePlace.setLinkPhoto(imagehttp);
                     sendToServer(myIds, singlePlace);
                     if(pathImage!=null) {
                         connectWithWS();
@@ -145,31 +150,6 @@ public class AddActivity extends AppCompatActivity {
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(i, IMG_REQUEST);
-    }
-    public void uploadImage(){
-
-        File file = new File(pathImage);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-
-
-        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("http://10.0.2.2:8080/")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-
-        MyInterfaceToRetro myInterfaceToRetro = retrofit.create(MyInterfaceToRetro.class);
-        Call<ResponseBody>call = myInterfaceToRetro.uploadImage(body);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Toast.makeText(AddActivity.this, "Success, file uploaded", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(AddActivity.this, "We cant upload path: "+pathImage, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void connectWithWS() {

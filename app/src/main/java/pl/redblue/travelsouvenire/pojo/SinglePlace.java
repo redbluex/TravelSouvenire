@@ -13,6 +13,16 @@ public class SinglePlace {
     private String country;
     @SerializedName("description")
     private String description;
+    @SerializedName("linkPhoto")
+    private String linkPhoto;
+
+    public String getLinkPhoto() {
+        return linkPhoto;
+    }
+
+    public void setLinkPhoto(String linkPhoto) {
+        this.linkPhoto = linkPhoto;
+    }
 
     public String getCountry() {
         return country;

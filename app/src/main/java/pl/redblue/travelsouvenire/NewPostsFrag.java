@@ -23,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import pl.redblue.travelsouvenire.pojo.Photos;
 import pl.redblue.travelsouvenire.pojo.SinglePlace;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,12 +39,10 @@ public class NewPostsFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_newposts, container, false);
-        ImageView imageView =(ImageView) rootView.findViewById(R.id.imageView2);
         ArrayList<SinglePlace> posts = new ArrayList<>();
         final RecyclerView rec = (RecyclerView) rootView.findViewById(R.id.newpostsRecycle);
         rec.setHasFixedSize(true);
         rec.setLayoutManager(new LinearLayoutManager(getActivity()));
-        Picasso.get().load("http://10.0.2.2:8080/images/photosuploaded.jpg").into(imageView);
         connectWithWS(posts, rec);
 
 
@@ -77,7 +76,12 @@ public class NewPostsFrag extends Fragment {
 
                     @Override
                     public void onNext(List<SinglePlace> singlePlaces) {
-                        arrayList.addAll(singlePlaces);
+                        for(SinglePlace single : singlePlaces){
+
+                            arrayList.add(single);
+                        }
+
+
                     }
 
                     @Override

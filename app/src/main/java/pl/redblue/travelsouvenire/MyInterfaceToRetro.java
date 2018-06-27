@@ -50,4 +50,11 @@ public interface MyInterfaceToRetro {
     @Multipart
     @POST("image")
     Call<ResponseBody> uploadImage(@Part MultipartBody.Part file);
+
+    @GET("places/{photoId}/upload")
+    Call<List<Photos>> downloadImage(@Path("photoId") Integer photoId);
+
+
+    @GET("upload")
+    Call<List<Photos>> downloadIm();
 }
